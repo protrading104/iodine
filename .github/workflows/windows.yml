@@ -5,14 +5,13 @@ on:
     branches: [ master ]
   pull_request:
     branches: [ master ]
-  workflow_dispatch:  # manual start
+  workflow_dispatch:
 
 permissions:
-    contents: read
+  contents: read
 
 jobs:
   build:
-
     runs-on: windows-latest
     defaults:
       run:
@@ -25,10 +24,10 @@ jobs:
         msystem: MINGW64
         update: false
         install: git make mingw-w64-x86_64-toolchain mingw-w64-x86_64-zlib
-    - name: Build project
-      run: make TARGETOS=windows32
-    - name: Upload artifact
+    - name: Build Windows Binaries
+      run: make cross-mingw64
+    - name: Upload Windows Binaries
       uses: actions/upload-artifact@v3
       with:
-        name: windows-build
-        path: ./build/*.exe  # path
+        name: windows-binaries
+        path: ./bin/*.exe
