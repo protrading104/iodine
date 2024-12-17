@@ -36,7 +36,7 @@ jobs:
     - name: Verify Binary Dependencies
       run: |
         echo "Checking for dependencies..."
-        mingw-w64-x86_64-objdump -p ./bin/iodine.exe | grep -i "DLL"
+        x86_64-w64-mingw32-objdump -p ./bin/iodine.exe | grep -i "DLL"
 
     - name: Upload Windows Binaries
       uses: actions/upload-artifact@v3
