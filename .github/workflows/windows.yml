@@ -19,13 +19,25 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
+
     - uses: msys2/setup-msys2@v2
       with:
         msystem: MINGW64
-        update: false
+        update: true
         install: git make mingw-w64-x86_64-toolchain mingw-w64-x86_64-zlib
+
+    - name: Configure Static Build
+      run: |
+        echo "LDFLAGS += -static -lz" >> Makefile
+
     - name: Build Windows Binaries
       run: make cross-mingw64
+
+    - name: Verify Binary Dependencies
+      run: |
+        echo "Checking for dependencies..."
+        mingw-w64-x86_64-objdump -p ./bin/iodine.exe | grep -i "DLL"
+
     - name: Upload Windows Binaries
       uses: actions/upload-artifact@v3
       with:
